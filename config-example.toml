@@ -1,0 +1,12 @@
+title = "项目配置"
+
+[app]
+author = "xxx"
+name = "xxxx"
+server_port = "8080"
+[mysql]
+host = "127.0.0.1"
+port = "3306"
+username = "root"
+password = "xxx"
+database = "db_xxx"

@@ -1,0 +1,27 @@
+schema {
+    query: Query
+}
+
+type Query {
+    getUserByID(ID: Int): User
+}
+
+type User {
+    id: Int!
+    username: String!
+    age: Int!
+    sex: String!
+}
+
+type Movie {
+    id: Int!
+    title: String!
+    casts: [Cast!]!
+    image: String!
+}
+
+type Cast {
+    id: Int!
+    name: String!
+    image: String!
+}

@@ -1,0 +1,8 @@
+{
+    getUserByID(ID: 1) {
+        id
+        username
+        age
+        sex
+    }
+}
