@@ -1,8 +1,21 @@
-{
-    getUserByID(ID: 1) {
-        id
-        username
-        age
-        sex
+query UserQuery {
+    getUserByID(ID: 2) {
+        ...respFields
     }
+    getUsers(IDs: [1, 2, 3]) {
+        ...respFields
+    }
+}
+
+mutation UserMutation {
+    createUser(input: {username: "lch", age: 23, sex:"male"}) {
+        ...respFields
+    }
+}
+
+fragment respFields on User {
+    id
+    username
+    age
+    sex
 }

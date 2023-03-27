@@ -1,12 +1,12 @@
 {
-  "name": "Untitled GraphQL Schema",
+  "name": "User GraphQL Schema",
   "schemaPath": "schema.graphql",
   "extensions": {
     "endpoints": {
-      "Default GraphQL Endpoint": {
+      "User GraphQL Endpoint": {
         "url": "http://localhost:8080/api/v1/graphql",
         "headers": {
-          "user-agent": "GoGql Stu test"
+          "user-agent": "go-gql GraphQL"
         },
         "introspect": false
       }

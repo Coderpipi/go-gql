@@ -8,11 +8,20 @@ import (
 type UserResolver struct {
 	*model.User
 }
+type UserInput struct {
+	Input struct {
+		Username string `json:"username"`
+		Sex      string `json:"sex"`
+		Age      int32  `json:"age"`
+	} `json:"input"`
+}
 
 type UserParams struct {
-	Id  *int32  `json:"id"`
-	Sex *string `json:"sex"`
-	Age *string `json:"age"`
+	Id       *int32   `json:"id"`
+	Username *string  `json:"username"`
+	Ids      []*int32 `json:"ids"`
+	Sex      *string  `json:"sex"`
+	Age      *int32   `json:"age"`
 }
 
 func (r *UserResolver) ID() int32 {
@@ -46,4 +55,13 @@ func wrapUserResolver(user *model.User) *UserResolver {
 	return &UserResolver{
 		user,
 	}
+}
+
+func wrapUserResolvers(ms []*model.User) []*UserResolver {
+	users := make([]*UserResolver, 0, len(ms))
+	for _, user := range ms {
+		users = append(users, &UserResolver{user})
+	}
+
+	return users
 }

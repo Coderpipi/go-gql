@@ -22,7 +22,7 @@ func GraphQL(c *gin.Context) {
 	if err != nil {
 		return
 	}
-	schema := graphql.MustParseSchema(gql.SchemaString, &resolver.QueryResolver{}, graphql.UseFieldResolvers())
+	schema := graphql.MustParseSchema(gql.SchemaString, &resolver.RootResolver{})
 	data := schema.Exec(c.Request.Context(), params.Query, params.OperationName, params.Variables)
 	c.JSON(http.StatusOK, data)
 }

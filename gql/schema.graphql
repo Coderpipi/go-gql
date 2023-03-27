@@ -1,27 +1,28 @@
 schema {
     query: Query
+    mutation: Mutation
 }
 
 type Query {
     getUserByID(ID: Int): User
+    getUsers(IDs:[Int]!): [User]!
 }
 
-type User {
-    id: Int!
+type Mutation {
+    createUser(input: UserInput!): User
+    deleteUser(ID: Int): User
+    updateUser(ID: Int!, input:UserInput): User
+}
+
+input UserInput {
     username: String!
     age: Int!
     sex: String!
 }
 
-type Movie {
+type User {
+    age: Int!
     id: Int!
-    title: String!
-    casts: [Cast!]!
-    image: String!
-}
-
-type Cast {
-    id: Int!
-    name: String!
-    image: String!
+    sex: String!
+    username: String!
 }

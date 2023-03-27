@@ -2,6 +2,7 @@ package model
 
 import (
 	"context"
+	"errors"
 	"gorm.io/gorm"
 )
 
@@ -24,4 +25,28 @@ func GetUserByID(ctx context.Context, db *gorm.DB, userID uint) (*User, error) {
 		return nil, err
 	}
 	return u, nil
+}
+
+func GetUsers(ctx context.Context, db *gorm.DB, ids []uint) ([]*User, error) {
+	users := make([]*User, 0)
+	if err := db.Model(new(User)).Find(&users, ids).Error; err != nil {
+		return nil, err
+	}
+	return users, nil
+}
+
+func CreateUser(ctx context.Context, db *gorm.DB, user *User) (*User, error) {
+	if user == nil {
+		return nil, errors.New("user 信息不能为空")
+	}
+
+	if user.UserName == "" {
+		return nil, errors.New("username 不能为空")
+
+	}
+
+	if err := db.Model(user).Save(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
 }
