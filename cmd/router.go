@@ -4,10 +4,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"go-gql/actions/api"
 	v1 "go-gql/actions/api/v1"
+	"go-gql/middleware"
 )
 
 func SetupRouter() *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.Cors())
 	r.GET("ping", api.Ping)
 	apiV1 := r.Group("/api/v1")
 	{
