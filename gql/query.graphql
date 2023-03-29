@@ -1,4 +1,5 @@
 query UserQuery {
+    hello
     getUserByID(ID: 2) {
         ...respFields
     }

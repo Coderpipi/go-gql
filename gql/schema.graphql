@@ -4,14 +4,15 @@ schema {
 }
 
 type Query {
+    hello:String
     getUserByID(ID: Int): User
     getUsers(IDs:[Int]!): [User]!
 }
 
 type Mutation {
     createUser(input: UserInput!): User
-    deleteUser(ID: Int): User
-    updateUser(ID: Int!, input:UserInput): User
+    #deleteUser(ID: Int): User
+    #updateUser(ID: Int!, input:UserInput): User
 }
 
 input UserInput {

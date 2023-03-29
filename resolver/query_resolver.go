@@ -6,6 +6,11 @@ import (
 	"go-gql/model"
 )
 
+func (*QueryResolver) Hello() *string {
+	s := "Hello World"
+	return &s
+}
+
 // GetUserByID 对应Schema中定义的FindByID方法，如果方法的error不为空，将响应500错误码
 func (*QueryResolver) GetUserByID(ctx context.Context, params UserParams) (*UserResolver, error) {
 	db := config.GetDB()
