@@ -8,17 +8,21 @@ import (
 type UserResolver struct {
 	*model.User
 }
+
 type UserInput struct {
+	Id    int32 `json:"id"`
 	Input struct {
 		Username string `json:"username"`
 		Sex      string `json:"sex"`
 		Age      int32  `json:"age"`
 	} `json:"input"`
 }
+
 type DeleteInput struct {
 	Id int32 `json:"id"`
 }
-type UserParams struct {
+
+type UserQueryParams struct {
 	Id       *int32   `json:"id"`
 	Username *string  `json:"username"`
 	Ids      []*int32 `json:"ids"`
