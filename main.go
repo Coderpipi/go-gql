@@ -41,9 +41,9 @@ func main() {
 			},
 		},
 	}
-	sigcomplete := make(chan struct{})
+	sigComplete := make(chan struct{})
 	go func() {
-		defer close(sigcomplete)
+		defer close(sigComplete)
 		err := app.Run(os.Args)
 		if err != nil {
 			log.Fatal("app run failed, err: ", err.Error())
@@ -53,11 +53,11 @@ func main() {
 	// Set up channel on which to send signal notifications.
 	// We must use a buffered channel or risk missing the signal
 	// if we're not ready to receive when the signal is sent.
-	sigterm := make(chan os.Signal, 1)
-	signal.Notify(sigterm, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+	sigTerm := make(chan os.Signal, 1)
+	signal.Notify(sigTerm, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	select {
-	case <-sigterm:
+	case <-sigTerm:
 		log.Println("receive stop signal")
-	case <-sigcomplete:
+	case <-sigComplete:
 	}
 }

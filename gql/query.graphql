@@ -3,13 +3,16 @@ query UserQuery {
     getUserByID(ID: 2) {
         ...respFields
     }
-    getUsers(IDs: [1, 2, 3]) {
+    getUsers(IDs: [1, 2, 3, 4, 5, 6]) {
         ...respFields
     }
 }
 
 mutation UserMutation {
-    createUser(input: {username: "lch", age: 23, sex:"male"}) {
+    #    createUser(input: {username: "lch", age: 23, sex:"male"}) {
+    #        ...respFields
+    #    }
+    deleteUser(ID: 1) {
         ...respFields
     }
 }

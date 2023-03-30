@@ -15,7 +15,9 @@ type UserInput struct {
 		Age      int32  `json:"age"`
 	} `json:"input"`
 }
-
+type DeleteInput struct {
+	Id int32 `json:"id"`
+}
 type UserParams struct {
 	Id       *int32   `json:"id"`
 	Username *string  `json:"username"`

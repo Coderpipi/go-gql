@@ -21,7 +21,7 @@ func (u *User) TableName() string {
 func GetUserByID(ctx context.Context, db *gorm.DB, userID uint) (*User, error) {
 	u := new(User)
 	u.ID = userID
-	if err := db.Model(u).First(&u).Error; err != nil {
+	if err := db.WithContext(ctx).Model(u).First(&u).Error; err != nil {
 		return nil, err
 	}
 	return u, nil
@@ -29,7 +29,7 @@ func GetUserByID(ctx context.Context, db *gorm.DB, userID uint) (*User, error) {
 
 func GetUsers(ctx context.Context, db *gorm.DB, ids []uint) ([]*User, error) {
 	users := make([]*User, 0)
-	if err := db.Model(new(User)).Find(&users, ids).Error; err != nil {
+	if err := db.WithContext(ctx).Model(new(User)).Find(&users, ids).Error; err != nil {
 		return nil, err
 	}
 	return users, nil
@@ -45,7 +45,16 @@ func CreateUser(ctx context.Context, db *gorm.DB, user *User) (*User, error) {
 
 	}
 
-	if err := db.Model(user).Save(user).Error; err != nil {
+	if err := db.WithContext(ctx).Model(user).Save(user).Error; err != nil {
+		return nil, err
+	}
+	return user, nil
+}
+
+func DeleteUser(ctx context.Context, db *gorm.DB, id uint) (*User, error) {
+	user := &User{}
+	user.ID = id
+	if err := db.WithContext(ctx).Model(user).Delete(user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil
