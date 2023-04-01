@@ -4,14 +4,15 @@ schema {
 }
 
 type Query {
-    hello:String
-    getUserByID(ID: Int): User
-    getUsers(IDs:[Int]!): [User]!
+    hello:String!
+    user(ID: Int!): User!
+    users(IDs:[Int!]!): [User!]!
+    login(input: UserLoginInput!):Token!
 }
 
 type Mutation {
-    createUser(input: UserInput!): User
-    deleteUser(ID: Int!): User
+    createUser(input: UserInput!): User!
+    deleteUser(ID: Int!): User!
     #updateUser(ID: Int!, input:UserInput): User
 }
 
@@ -19,11 +20,31 @@ input UserInput {
     username: String!
     age: Int!
     sex: String!
+    phone: String!
+    type: Int!
+}
+
+input UserLoginInput {
+    phone: String!
+    verifyCode:String!
+    loginType:Int!
+    password: String!
 }
 
 type User {
-    age: Int!
     id: Int!
-    sex: String!
     username: String!
+    age: Int!
+    sex: String!
+    phone: String!
+    type: Int!
+}
+
+type Token {
+    token: String!
+}
+
+enum LoginType {
+    PASSWORD
+    VERIFY_CODE
 }

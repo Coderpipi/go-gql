@@ -3,25 +3,61 @@ package model
 import (
 	"context"
 	"errors"
+	"go-gql/common"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
+)
+
+const (
+	PasswordCost = 12
+	Unknown      = iota
+	Normal
+	Vip
+	Admin
 )
 
 type User struct {
 	gorm.Model
 	UserName string `gorm:"column:username;type:varchar(255);not null;default ''" json:"UserName"`
+	Phone    string `gorm:"column:phone;type:varchar(11);not null;default ''" json:"phone"`
+	Password string `gorm:"column:password;type:varchar(255);not null;" json:"password"`
+	Type     int8   `gorm:"column:type;type:tinyint;not null; default 0" json:"type"`
 	Age      int8   `gorm:"column:age;type:int(8);" json:"age"`
-	Sex      string `gorm:"column:sex;type:varchar(10);not null; default ''" json:"sex"`
-	Password string `gorm:"column:sex;type:varchar(255);not null;" json:"password"`
+	Sex      string `gorm:"column:sex;type:varchar(10);not null;default ''" json:"sex"`
 }
 
 func (u *User) TableName() string {
 	return "user"
 }
 
+func WithUserID(id uint) common.Option {
+	return common.OptionFunc(func(options *common.Options) {
+		options.Query["id"] = id
+	})
+}
+
+func WithPhone(phone string) common.Option {
+	return common.OptionFunc(func(options *common.Options) {
+		options.Query["phone"] = phone
+	})
+}
+
+func GetUser(ctx context.Context, db *gorm.DB, options ...common.Option) (*User, error) {
+	opts := &common.Options{Query: make(map[string]interface{})}
+	for _, opt := range options {
+		opt.Apply(opts)
+	}
+	u := new(User)
+	if err := db.WithContext(ctx).Model(u).Where(opts.Query).First(u).Error; err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 func GetUserByID(ctx context.Context, db *gorm.DB, userID uint) (*User, error) {
 	u := new(User)
 	u.ID = userID
-	if err := db.WithContext(ctx).Model(u).First(&u).Error; err != nil {
+	if err := db.WithContext(ctx).Model(u).First(u).Error; err != nil {
 		return nil, err
 	}
 	return u, nil
@@ -58,4 +94,18 @@ func DeleteUser(ctx context.Context, db *gorm.DB, id uint) (*User, error) {
 		return nil, err
 	}
 	return user, nil
+}
+
+func (u *User) SetPassword(password string) error {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), PasswordCost)
+	if err != nil {
+		return err
+	}
+	u.Password = string(bytes)
+	return nil
+}
+
+func (u *User) CheckPassword(password string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
+	return err == nil
 }

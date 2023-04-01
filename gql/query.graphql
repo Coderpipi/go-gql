@@ -1,16 +1,22 @@
-query UserQuery($id: Int){
+query UserQuery($id: Int!){
     hello
-    getUserByID(ID: $id) {
+    user(ID: $id) {
         ...respFields
     }
-    getUsers(IDs: [1, 2, 3, 4, 5, 6]) {
+    users(IDs: [1, 2, 3, 4, 5, 6]) {
         ...respFields
     }
 
 }
 
+query Login($input:UserLoginInput!) {
+    login(input: $input) {
+        token
+    }
+}
+
 mutation UserMutation {
-    createUser(input: {username: "lbw", age: 22, sex:"male"}) {
+    createUser(input: {username: "lbw", age: 22, sex:"male", type: 1, phone: "15173828930"}) {
         ...respFields
     }
 
@@ -27,4 +33,6 @@ fragment respFields on User {
     username
     age
     sex
+    phone
+    type
 }
