@@ -47,5 +47,6 @@ func (*QueryResolver) Login(ctx context.Context, params LoginInput) (*Token, err
 	}
 	return &Token{
 		TokenString: token,
+		UserInfo:    wrapUserResolver(user),
 	}, nil
 }

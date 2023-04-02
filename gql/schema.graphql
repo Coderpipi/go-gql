@@ -42,6 +42,7 @@ type User {
 
 type Token {
     token: String!
+    user: User!
 }
 
 enum LoginType {

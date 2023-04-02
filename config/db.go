@@ -2,9 +2,10 @@ package config
 
 import (
 	"fmt"
-	"go-gql/model"
+	"go-gql/common"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 	"log"
 )
 
@@ -25,11 +26,12 @@ func initMysql() {
 	)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
+		PrepareStmt:                              true,
+		Logger:                                   logger.Default.LogMode(common.LogLevelMap[Config.App.LogLevel]),
 	})
 	if err != nil {
 		panic("init mysql error")
 	}
-	_ = db.AutoMigrate(&model.User{})
 	log.Println("init mysql success")
 	mysqlDB = db
 }

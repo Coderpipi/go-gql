@@ -32,7 +32,7 @@ func (*PasswordLogin) Verify(ctx context.Context, params *LoginInput) (*model.Us
 	user, err := model.GetUser(ctx, db, model.WithPhone(params.Input.Phone))
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, errors.New("改手机号尚未注册用户")
+			return nil, errors.New("该手机号尚未注册用户")
 		}
 		return nil, err
 	}

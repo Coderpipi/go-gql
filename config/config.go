@@ -11,9 +11,9 @@ import (
 var Config *Cfg
 
 type App struct {
-	Name string `toml:"name"`
-
+	Name       string `toml:"name"`
 	ServerPort string `toml:"server_port"`
+	LogLevel   string `toml:"log_level"`
 }
 
 type Cfg struct {
