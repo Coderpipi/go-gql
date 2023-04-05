@@ -53,6 +53,7 @@ func (r *UserResolver) Username() string {
 func (r *UserResolver) Type() int32 {
 	return int32(r.User.Type)
 }
+
 func (r *UserResolver) Phone() string {
 	return r.User.Phone
 }

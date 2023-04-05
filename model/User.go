@@ -80,8 +80,33 @@ func CreateUser(ctx context.Context, db *gorm.DB, user *User) (*User, error) {
 		return nil, errors.New("username 不能为空")
 
 	}
+	if err := db.WithContext(ctx).Model(user).Where("phone = ?", user.Phone).First(new(User)).Error; err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, err
+		}
 
-	if err := db.WithContext(ctx).Model(user).Save(user).Error; err != nil {
+		if err := db.WithContext(ctx).Model(user).Save(user).Error; err != nil {
+			return nil, err
+		}
+
+		return user, nil
+	}
+
+	return nil, errors.New("该手机号已经被用户使用了")
+}
+
+func UpdateUser(ctx context.Context, db *gorm.DB, user *User) (*User, error) {
+	if user == nil {
+		return nil, errors.New("user 信息不能为空")
+	}
+	var count int64 = 0
+	if err := db.WithContext(ctx).Model(user).Where("id = ?", user.ID).Count(&count).Error; err != nil {
+		return nil, err
+	}
+	if count == 0 {
+		return nil, errors.New("当前用户不存在")
+	}
+	if err := db.WithContext(ctx).Model(user).UpdateColumns(user).Error; err != nil {
 		return nil, err
 	}
 	return user, nil

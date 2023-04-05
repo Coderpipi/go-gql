@@ -30,6 +30,12 @@ mutation deleteUser {
     }
 }
 
+mutation updateUser($id:Int!, $input:UserInput!) {
+    updateUser(ID: $id, input: $input) {
+        ...respFields
+    }
+}
+
 fragment respFields on User {
     id
     username
